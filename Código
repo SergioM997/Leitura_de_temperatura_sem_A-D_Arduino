@@ -1,0 +1,35 @@
+#define lecturePin      8       
+#define chargePin      13        
+#define dischargePin   11       
+
+unsigned long startTime;
+unsigned long elapsedTime;
+unsigned long R;
+unsigned long constatempo;
+unsigned long T;
+
+void setup(){
+  pinMode(chargePin, OUTPUT);     
+  pinMode(lecturePin, INPUT);
+  pinMode(12, INPUT);
+  pinMode(dischargePin, OUTPUT);
+  digitalWrite(chargePin, LOW);
+  Serial.begin(9600); 
+}
+
+void loop(){
+
+  digitalWrite(chargePin, HIGH); 
+  if(digitalRead(12)==1){
+    elapsedTime = millis() - startTime;
+    digitalWrite(chargePin, LOW); 
+    digitalWrite(dischargePin, HIGH);
+    delay(200);
+    digitalWrite(dischargePin, LOW);
+    startTime = millis();
+    constatempo = elapsedTime/(0.373333);
+    R = 1000*constatempo;
+    elapsedTime = 0;
+    T = (log((R - 49886)/283786.2))/(-0.06593);
+    Serial.println(T);}
+}  
